@@ -8,26 +8,26 @@ use std::env;
 #[allow(dead_code)]
 struct Settings {
     length: i32,
-    number: bool,
-    maj: bool,
+    digit: bool,
+    uppercase: bool,
     special_char: bool,
 }
 
 impl Settings {
-    fn new(length: i32, number: bool, maj: bool, special_char: bool) -> Settings {
+    fn new(length: i32, digit: bool, uppercase: bool, special_char: bool) -> Settings {
         Settings {
             length,
-            number,
-            maj,
+            digit,
+            uppercase,
             special_char,
         }
     }
     fn display_config(&self) {
         println!(
-            "Generating password of len {} with number set as {}, majuscule {} and special character {}.",
+            "Generating password of len {} with digit set as {}, uppercase {} and special character {}.",
             self.length,
-            self.number,
-            self.maj
+            self.digit,
+            self.uppercase,
             self.special_char
         );
     }
@@ -35,8 +35,9 @@ impl Settings {
 
 fn print_usage(program: &str, opts: &Options) {
     let brief = format!("Usage: {} [options]", program);
-    print!("{}", opts.usage(&brief));
+    println!("{}", opts.usage(&brief));
 }
+
 fn parser(args: Vec<String>) -> Option<Settings> {
     let mut option = Settings::new(12, false, false, false);
     let mut opts = Options::new();
@@ -47,9 +48,9 @@ fn parser(args: Vec<String>) -> Option<Settings> {
         "Define len of password(default 12)",
         "LENGTH",
     );
-    opts.optflag("n", "number", "Use number");
+    opts.optflag("d", "digit", "Use digit");
     opts.optflag("s", "special", "Use special char");
-    opts.optflag("m", "majuscule", "Use majuscule");
+    opts.optflag("u", "uppercase", "Use uppercase");
     opts.optflag("h", "help", "Display use");
 
     let matches = match opts.parse(&args[1..]) {
@@ -69,8 +70,8 @@ fn parser(args: Vec<String>) -> Option<Settings> {
 
     let option = Settings::new(
         option.length,
-        matches.opt_present("number"),
-        matches.opt_present("majuscule"),
+        matches.opt_present("digit"),
+        matches.opt_present("uppercase"),
         matches.opt_present("special"),
     );
     option.display_config();
