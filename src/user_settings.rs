@@ -20,10 +20,10 @@ impl Settings {
     fn display_config(&self) {
         println!(
             "Generating password of len {} with digit set as {}, uppercase {} and special character {}.",
-            self.length,
-            self.digit,
-            self.uppercase,
-            self.special_char
+        self.length,
+            if self.digit { "enabled" } else { "disabled" },
+            if self.uppercase { "enabled" } else { "disabled" },
+            if self.special_char { "enabled" } else { "disabled" },
         );
     }
 }
@@ -32,6 +32,7 @@ fn print_usage(program: &str, opts: &Options) {
     let brief = format!("Usage: {} [options]", program);
     println!("{}", opts.usage(&brief));
 }
+
 pub fn parser(args: Vec<String>) -> Option<Settings> {
     let mut option = Settings::new(12, false, false, false);
     let mut opts = Options::new();
@@ -45,6 +46,7 @@ pub fn parser(args: Vec<String>) -> Option<Settings> {
     opts.optflag("d", "digit", "Use digit");
     opts.optflag("s", "special", "Use special char");
     opts.optflag("u", "uppercase", "Use uppercase");
+    opts.optflag("e", "smiley", "Use smiley");
     opts.optflag("h", "help", "Display use");
 
     let matches = match opts.parse(&args[1..]) {

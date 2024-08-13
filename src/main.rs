@@ -1,6 +1,6 @@
 mod generator;
-mod user_settings;
 mod tools;
+mod user_settings;
 
 use std::env;
 
